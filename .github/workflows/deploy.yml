@@ -18,6 +18,19 @@ jobs:
           cd /home/umrah-mgmt
           git fetch origin main
           git reset --hard origin/main
-          /home/frappe/.local/bin/bench --site 26i.uk migrate
-          /home/frappe/.local/bin/bench build
-          /home/frappe/.local/bin/bench restart
+          # Dynamically locate bench
+          BENCH_CMD="bench"
+          if command -v bench &> /dev/null; then
+            BENCH_CMD="bench"
+          elif [ -f "$HOME/.local/bin/bench" ]; then
+            BENCH_CMD="$HOME/.local/bin/bench"
+          elif [ -f "/home/frappe/.local/bin/bench" ]; then
+            BENCH_CMD="/home/frappe/.local/bin/bench"
+          elif [ -f "/usr/local/bin/bench" ]; then
+            BENCH_CMD="/usr/local/bin/bench"
+          fi
+          echo "Using bench command: $BENCH_CMD"
+
+          $BENCH_CMD --site 26i.uk migrate
+          $BENCH_CMD build
+          $BENCH_CMD restart
