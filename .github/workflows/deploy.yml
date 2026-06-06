@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: Deploy Code & Migrate
         run: |
+          if [ ! -d "/home/umrah-mgmt" ]; then
+            echo "Directory /home/umrah-mgmt does not exist. Creating and cloning..."
+            sudo mkdir -p /home/umrah-mgmt
+            sudo chown -R $(whoami):$(whoami) /home/umrah-mgmt
+            git clone https://github.com/khalilksa33/umrah-mgmt /home/umrah-mgmt
+          fi
           cd /home/umrah-mgmt
           git fetch origin main
           git reset --hard origin/main
