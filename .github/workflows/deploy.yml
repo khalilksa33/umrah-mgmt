@@ -9,24 +9,32 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Deploy Code & Migrate
+      - name: Inspect Dependencies on Host B
         run: |
-          if [ ! -d "/home/umrah-mgmt/.git" ]; then
-            echo "Git repository not found. Initializing clone..."
-            git clone https://github.com/khalilksa33/umrah-mgmt /home/umrah-mgmt || (sudo rm -rf /home/umrah-mgmt && sudo mkdir -p /home/umrah-mgmt && sudo chown -R $(whoami):$(whoami) /home/umrah-mgmt && git clone https://github.com/khalilksa33/umrah-mgmt /home/umrah-mgmt)
-          fi
-          cd /home/umrah-mgmt
-          git fetch origin main
-          git reset --hard origin/main
-          # Add local bin to PATH
+          echo "=== Python Version ==="
+          python3 --version || echo "python3 not found"
+          pip3 --version || echo "pip3 not found"
+          
+          echo "=== Node.js Version ==="
+          node --version || echo "node not found"
+          npm --version || echo "npm not found"
+          
+          echo "=== Redis Version ==="
+          redis-server --version || echo "redis-server not found"
+          redis-cli --version || echo "redis-cli not found"
+          
+          echo "=== MariaDB / MySQL Version ==="
+          mariadb --version || mysql --version || echo "MariaDB/MySQL not found"
+          
+          echo "=== Active Services ==="
+          systemctl is-active mariadb || systemctl is-active mysql || echo "db service not active"
+          systemctl is-active redis || systemctl is-active redis-server || echo "redis service not active"
+          
+          echo "=== Bench & Environment ==="
+          which bench || echo "bench not in PATH"
           export PATH="$HOME/.local/bin:$PATH"
-
-          # Install bench if not present
-          if ! command -v bench &> /dev/null; then
-            echo "Bench not found. Installing frappe-bench..."
-            python3 -m pip install --user frappe-bench || pip3 install --user frappe-bench || pip install --user frappe-bench
-          fi
-
-          bench --site 26i.uk migrate
-          bench build
-          bench restart
+          which bench || echo "bench not in local bin PATH"
+          
+          echo "=== System Info ==="
+          uname -a
+          df -h
