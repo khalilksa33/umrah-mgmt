@@ -1,2 +1,2 @@
-sftp:debug: no such variable. Use `set -a' to look at all variables.
-mirror: Not connected
+Deployment log cleared — previous SFTP mirror errors were from a deprecated deployment method.
+Active deployment now handled by GitHub Actions (.github/workflows/deploy.yml) via self-hosted runner.
