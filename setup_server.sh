@@ -17,15 +17,14 @@ cd /home/iicc2/umrah-mgmt
 # 3. Ensure logs and config/pids directory exists
 mkdir -p logs config/pids
 
-# 4. Install socketio dependencies inside frappe app
-echo "Installing socketio dependencies..."
-if [ -d "apps/frappe" ]; then
-    cd apps/frappe
-    yarn install
-    cd ../..
-else
-    echo "Warning: apps/frappe not found!"
-fi
+# 4. Install node_modules for every app that has a package.json
+echo "Installing node dependencies for all apps..."
+for app_dir in apps/*/; do
+    if [ -f "${app_dir}package.json" ]; then
+        echo "  --> yarn install in ${app_dir}"
+        (cd "${app_dir}" && yarn install --frozen-lockfile 2>/dev/null || yarn install)
+    fi
+done
 
 # 5. Fetch builder app (branch version-15 or develop fallback)
 echo "Fetching builder app..."
@@ -97,8 +96,12 @@ bench --site 26i.uk install-app \
   insight_nexus \
   umrah_management
 
-# 12. Build assets
+# 12. Build assets — build app by app to catch and skip individual failures
 echo "Building bench assets..."
+bench build --app frappe
+bench build --app erpnext
+bench build --app hrms
+# Build all remaining apps together
 bench build
 
 # 13. Link supervisor and restart services
