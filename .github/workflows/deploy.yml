@@ -20,11 +20,11 @@ jobs:
 
           if [ ! -d "$BENCH_HOME/.git" ]; then
             echo "Git repository not found. Initializing clone..."
-            git clone https://github.com/khalilksa33/umrah-mgmt "$BENCH_HOME" \
+            git clone https://github.com/khalilksa33/business-mgm "$BENCH_HOME" \
               || (sudo rm -rf "$BENCH_HOME" \
                   && sudo mkdir -p "$BENCH_HOME" \
                   && sudo chown -R $(whoami):$(whoami) "$BENCH_HOME" \
-                  && git clone https://github.com/khalilksa33/umrah-mgmt "$BENCH_HOME")
+                  && git clone https://github.com/khalilksa33/business-mgm "$BENCH_HOME")
           fi
 
           cd "$BENCH_HOME"

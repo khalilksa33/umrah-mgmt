@@ -3,7 +3,7 @@ set -e
 export PATH="/home/frappe/.local/bin:/home/frappe/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 echo "=== Setting up bench env ==="
-cd /home/frappe/business-mgmt
+cd /home/frappe/business-mgm
 bench setup env
 
 echo "=== Creating common_site_config.json ==="

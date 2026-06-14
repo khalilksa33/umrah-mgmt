@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 export PATH="/home/frappe/.local/bin:/home/frappe/.nvm/versions/node/v24.14.0/bin:$PATH"
-cd /home/frappe/business-mgmt
+cd /home/frappe/business-mgm
 
 echo "=== Symlinking production apps ==="
 PROD_APPS_DIR="/home/frappe/frappe/frappe-production/apps"

@@ -1,10 +1,10 @@
 #!/bin/bash
-# Umrah Management Bench Setup Script
-# Run this script on the erp-worker-02 server under the iicc2 user.
+# Business Management Bench Setup Script
+# Run this script on Host B (192.168.8.59) under the iicc2 user.
 
 set -e
 
-echo "=== Starting Umrah Management Bench Setup Script ==="
+echo "=== Starting Business Management Bench Setup Script ==="
 
 # 1. Global yarn installation
 echo "Checking and installing yarn..."
@@ -45,7 +45,7 @@ if [ ! -d "apps/telephony" ]; then
 fi
 
 # 8. Install custom apps into virtual environment
-echo "Installing custom apps (insight_nexus, umrah_management) to python env..."
+echo "Installing custom apps (insight_nexus, business_management) to python env..."
 ./env/bin/pip install -e apps/insight_nexus
 ./env/bin/pip install -e apps/business_management
 
